@@ -1,0 +1,201 @@
+# general settings
+name: SwinIR_SRx4_DCKD_DIV2K_250k_B16G4
+model_type: DCKDModel
+scale: 4
+num_gpu: 4
+manual_seed: 10
+
+# dataset and data loader settings
+datasets:
+  train:
+    name: DIV2K
+    type: PairedImageDataset
+    dataroot_gt: datasets/DIV2K/DIV2K_train_HR_sub
+    dataroot_lq: datasets/DIV2K/DIV2K_train_LR/X4_sub
+    meta_info_file: basicsr/data/meta_info/meta_info_DIV2K800sub_GT.txt
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk
+
+    gt_size: 192
+    use_hflip: true
+    use_rot: true
+
+    # data loader
+    num_worker_per_gpu: 8
+    batch_size_per_gpu: 16
+    dataset_enlarge_ratio: 100
+    prefetch_mode: ~
+
+  val_1:
+    name: Set5
+    type: PairedImageDataset
+    dataroot_gt: datasets/Benchmark_SR/Set5/HR
+    dataroot_lq: datasets/Benchmark_SR/Set5/LR_bicubic/X4
+    filename_tmpl: '{}x4'
+    io_backend:
+      type: disk
+  
+  val_2:
+    name: Set14
+    type: PairedImageDataset
+    dataroot_gt: datasets/Benchmark_SR/Set14/HR
+    dataroot_lq: datasets/Benchmark_SR/Set14/LR_bicubic/X4
+    filename_tmpl: '{}x4'
+    io_backend:
+      type: disk
+  
+  val_3:
+    name: Urban100
+    type: PairedImageDataset
+    dataroot_gt: datasets/Benchmark_SR/Urban100/HR
+    dataroot_lq: datasets/Benchmark_SR/Urban100/LR_bicubic/X4
+    filename_tmpl: '{}x4'
+    io_backend:
+      type: disk
+
+# network structures
+network_t:
+  type: SwinIR
+  upscale: 4
+  in_chans: 3
+  img_size: 48
+  window_size: 8
+  img_range: 1.
+  depths: [6, 6, 6, 6, 6, 6]
+  embed_dim: 180
+  num_heads: [6, 6, 6, 6, 6, 6]
+  mlp_ratio: 2
+  upsampler: 'pixelshuffle'
+  resi_connection: '1conv'
+
+network_g:
+  type: SwinIR
+  upscale: 4
+  in_chans: 3
+  img_size: 48
+  window_size: 8
+  img_range: 1.
+  depths: [6, 6, 6, 6]
+  embed_dim: 60
+  num_heads: [6, 6, 6, 6]
+  mlp_ratio: 2
+  upsampler: 'pixelshuffle'
+  resi_connection: '1conv'
+
+network_his: true
+
+network_vqgan:
+  type: VQGAN
+  embed_dim: 256
+  n_embed: 1024
+  ddconfig:
+    in_channels: 3
+    out_ch: 3
+    resolution: 256
+    ch: 128
+    ch_mult: [1, 1, 2, 2, 4]
+    num_res_blocks: 2
+    attn_resolutions: [16]
+    dropout: 0.0
+    double_z: false
+    z_channels: 256
+
+# path
+path:
+  pretrain_network_t: experiments/pretrained_models/SwinIR/001_classicalSR_DIV2K_s48w8_SwinIR-M_x4.pth
+  strict_load_t: true
+  param_key_t: params_ema
+
+  pretrain_network_g: ~
+  strict_load_g: true
+  param_key_g: params_ema
+
+  pretrain_network_vqgan: experiments/pretrained_models/VQGAN/VQGAN_f16_n1024.ckpt
+  strict_load_vqgan: false
+  param_key_vqgan: state_dict
+
+# training settings
+train:
+  ema_decay: 0.999
+  optim_g:
+    type: Adam
+    lr: !!float 1e-4
+    weight_decay: 0
+    betas: [0.9, 0.99]
+
+  scheduler:
+    type: MultiStepLR
+    milestones: [250000]
+    gamma: 0.1
+
+  total_iter: 250000
+  warmup_iter: -1  # no warm up
+
+  # losses
+  pixel_opt:
+    type: L1Loss
+    loss_weight: 1.0
+    reduction: mean
+  
+  logits_opt:
+    type: L1Loss
+    loss_weight: 1.0
+    reduction: mean
+
+  lcr_opt:
+    type: L1Loss
+    loss_weight: 1.0
+    reduction: mean
+  noisy:
+    prob: 0.5
+
+  cl_opt:
+    type: ContrasLoss
+    d_func: L1
+    loss_weight: 0.1
+    weights: [0.03125, 0.0625, 0.125, 0.25, 1.0]
+  num_neg: 4
+  update_decay: 0.1
+  step: [1000, 2000, 3000]
+
+  gaussian_blur_prob: 0
+  resize_prob: 0
+  gaussian_noise_prob: 1.0
+  gray_noise_prob: 0.5
+
+  ce_opt:
+    type: CELoss
+    loss_weight: 0.001
+    reduction: mean
+
+# validation settings
+val:
+  val_freq: !!float 5e3
+  save_img: false
+
+  window_size: 8
+
+  metrics:
+    psnr: # metric name, can be arbitrary
+      type: calculate_psnr
+      crop_border: 4
+      test_y_channel: true
+    ssim:
+      type: calculate_ssim
+      crop_border: 4
+      test_y_channel: true
+
+# logging settings
+logger:
+  print_freq: 1000
+  save_checkpoint_freq: !!float 5e3
+  use_tb_logger: true
+  wandb:
+    project: ~
+    resume_id: ~
+
+# dist training settings
+dist_params:
+  backend: nccl
+  port: 29500
