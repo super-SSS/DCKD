@@ -1,4 +1,18 @@
 # Dynamic Contrastive Knowledge Distillation for Efficient Image Restoration
+<div>
+    Yunshuai Zhou<sup>1,*</sup>&emsp;
+    Junbo Qiao<sup>1,*</sup>&emsp;
+    Jincheng Liao<sup>1</sup>&emsp;
+    Wei Li<sup>2</sup>&emsp;
+    Simiao Li<sup>2</sup>&emsp;
+    Jiao Xie<sup>1</sup>&emsp;
+    Yunhang Shen<sup>3</sup>&emsp;
+    Jie Hu<sup>2</sup>&emsp;
+    Shaohui Lin<sup>1,4,†</sup>
+</div>
+<div>
+    <sup>1</sup>East China Normal University, <sup>2</sup>Huawei Noah’s Ark Lab, <sup>3</sup>Xiamen University, <sup>4</sup>Key Laboratory of Advanced Theory and Application in Statistics and Data Science- MOE
+</div>
 
 [![Paper](https://img.shields.io/badge/Paper-arXiv-blue)](https://arxiv.org/abs/2412.08939) 
 
@@ -7,9 +21,11 @@ Knowledge distillation (KD) is a valuable yet challenging approach that enhances
 
 ![DCKD](DCKD.png)
 
-## News
+#### 🚩Accepted by AAAI2025
 
-- **Jan 23, 2025:** Training codes is released.
+## News
+- [2025.01] Training codes is released.
+- [2024.12] 💥💥💥Congratulations, DCKD has been applied to the Huawei’s flagship model!
 
 ## Preparation
 
