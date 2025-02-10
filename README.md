@@ -11,10 +11,11 @@
     Shaohui Lin<sup>1,4,†</sup>
 </div>
 <div>
-    <sup>1</sup>East China Normal University, <sup>2</sup>Huawei Noah’s Ark Lab, <sup>3</sup>Xiamen University, <sup>4</sup>Key Laboratory of Advanced Theory and Application in Statistics and Data Science- MOE
+    <sup>1</sup>East China Normal University, <sup>2</sup>Huawei Noah’s Ark Lab, <sup>3</sup>Xiamen University,<br/>
+    <sup>4</sup>Key Laboratory of Advanced Theory and Application in Statistics and Data Science- MOE
 </div>
 
-[![Paper](https://img.shields.io/badge/Paper-arXiv-blue)](https://arxiv.org/abs/2412.08939) 
+[[Paper]](https://arxiv.org/abs/2412.08939)
 
 > **Abstract:** 
 Knowledge distillation (KD) is a valuable yet challenging approach that enhances a compact student network by learning from a high-performance but cumbersome teacher model. However, previous KD methods for image restoration overlook the state of the student during the distillation, adopting a fixed solution space that limits the capability of KD. Additionally, relying solely on L1-type loss struggles to leverage the distribution information of images. In this work, we propose a novel dynamic contrastive knowledge distillation~(DCKD) framework for image restoration. Specifically, we introduce dynamic contrastive regularization to perceive the student's learning state and dynamically adjust the distilled solution space using contrastive learning. Additionally, we also propose a distribution mapping module to extract and align the pixel-level category distribution of the teacher and student models. Note that the proposed DCKD is a structure-agnostic distillation framework, which can adapt to different backbones and can be combined with methods that optimize upper-bound constraints to further enhance model performance. Extensive experiments demonstrate that DCKD significantly outperforms the state-of-the-art KD methods across various image restoration tasks and backbones.
