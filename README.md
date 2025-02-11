@@ -25,7 +25,8 @@ Knowledge distillation (KD) is a valuable yet challenging approach that enhances
 ## News
 
 - [2025.01] Training codes is released.
-- [2024.12] Accepted by AAAI2025. Congratulations, DCKD has been applied to the Huawei Mate70 and Mate X6 series!
+- [2024.12] 💥💥💥Congratulations, DCKD has been applied to the Huawei Mate70 and Mate X6 series!
+- [2024.12] 🚩Accepted by AAAI2025.
 
 ## Preparation
 
