@@ -22,11 +22,10 @@ Knowledge distillation (KD) is a valuable yet challenging approach that enhances
 
 ![DCKD](DCKD.png)
 
-#### 🚩Accepted by AAAI2025
-
 ## News
+
 - [2025.01] Training codes is released.
-- [2024.12] 💥💥💥Congratulations, DCKD has been applied to the Huawei’s flagship model!
+- [2024.12] Accepted by AAAI2025. Congratulations, DCKD has been applied to the Huawei Mate70 and Mate X6 series!
 
 ## Preparation
 
@@ -75,6 +74,24 @@ Run the following script to test the trained model:
 ```sh
 python basicsr/test.py -opt options/test/SwinIR/test_SwinIR.yml
 ```
+
+## Results
+
+<details>
+<summary>Quantitative Comparisons (click to expand)</summary>
+
+<p align="center">
+  <img src="quantitative_comparison.png">
+</p>
+</details>
+
+<details>
+<summary>Visual Comparisons (click to expand)</summary>
+
+<p align="center">
+  <img src="visualization.png">
+</p>
+</details>
 
 ## Citation
 
